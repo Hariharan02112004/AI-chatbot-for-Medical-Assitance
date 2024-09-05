@@ -1,0 +1,104 @@
+!pip install ollama
+
+import os
+import ollama
+
+# Set your API key for Ollama
+os.environ['OLLAMA_API_KEY'] = 'YOUR_API_KEY'
+
+# Initialize Ollama client
+client = ollama.Client()
+
+# Define the function to generate responses using Ollama or custom advice
+def generate_response(prompt):
+    prompt_lower = prompt.lower()
+
+    # Check for specific symptoms and provide tailored advice
+    if "headache" in prompt_lower:
+        return ("It seems like you have a headache. Here are a few things you can try:\n"
+                "- Drink plenty of water to stay hydrated.\n"
+                "- Rest in a quiet, dark room.\n"
+                "- Try using a cold or warm compress on your forehead.\n"
+                "- Take over-the-counter pain relievers like ibuprofen or acetaminophen.\n\n"
+                "If your headache is severe or accompanied by other symptoms like confusion, weakness, or visual disturbances, "
+                "please seek medical attention immediately.")
+
+    elif "fever" in prompt_lower:
+        return ("It sounds like you're experiencing a fever. Here's what you can do:\n"
+                "- Stay hydrated by drinking plenty of fluids.\n"
+                "- Rest and avoid strenuous activities.\n"
+                "- Take over-the-counter medications like acetaminophen or ibuprofen to reduce fever.\n\n"
+                "If your fever is very high (above 103°F/39.4°C) or lasts more than a few days, you should consult a healthcare provider.")
+
+    elif "stomach ache" in prompt_lower or "stomach pain" in prompt_lower:
+        return ("A stomach ache can be uncomfortable. Here are some tips:\n"
+                "- Drink clear fluids and avoid solid food until the pain subsides.\n"
+                "- Avoid foods and drinks that may irritate your stomach, like spicy foods or caffeine.\n"
+                "- Consider taking antacids or other over-the-counter remedies.\n\n"
+                "If your stomach pain is severe, persistent, or accompanied by other symptoms like vomiting, consult a doctor immediately.")
+
+    elif "cough" in prompt_lower:
+        return ("A cough can be annoying. Here's what you can do:\n"
+                "- Stay hydrated and drink warm liquids like tea or broth.\n"
+                "- Use cough drops or lozenges to soothe your throat.\n"
+                "- Consider using a humidifier to keep the air moist.\n\n"
+                "If your cough lasts more than a few weeks or is accompanied by shortness of breath or chest pain, see a healthcare provider.")
+
+    elif "chest pain" in prompt_lower:
+        return ("Chest pain can be serious. Please consider the following:\n"
+                "- If the pain is mild and may be related to something like heartburn, try antacids and rest.\n"
+                "- However, if the pain is severe, sudden, or accompanied by other symptoms like shortness of breath, dizziness, or sweating, "
+                "seek emergency medical attention immediately. Chest pain could be a sign of a heart attack or other serious conditions.")
+
+    # New diagnostic conditions
+    elif "sore throat" in prompt_lower:
+        return ("It sounds like you have a sore throat. Here's what you can do:\n"
+                "- Gargle with warm salt water.\n"
+                "- Drink warm liquids like tea with honey.\n"
+                "- Use throat lozenges or sprays.\n"
+                "- Avoid irritants like smoking or dry air.\n\n"
+                "If your sore throat persists for more than a week, or if you have difficulty swallowing or breathing, you should see a doctor.")
+
+    elif "back pain" or "backpain" in prompt_lower:
+        return ("Back pain can be uncomfortable. Here are some things to try:\n"
+                "- Rest and avoid heavy lifting.\n"
+                "- Apply heat or ice to the painful area.\n"
+                "- Consider over-the-counter pain relievers like ibuprofen.\n"
+                "- Practice good posture and use supportive pillows when sitting or sleeping.\n\n"
+                "If your back pain is severe, lasts for more than a few weeks, or is accompanied by leg pain, numbness, or weakness, consult a healthcare provider.")
+
+    elif "dizziness" in prompt_lower:
+        return ("Feeling dizzy can be unsettling. Here are some suggestions:\n"
+                "- Sit or lie down until the dizziness passes.\n"
+                "- Drink water to stay hydrated.\n"
+                "- Avoid sudden movements or standing up too quickly.\n"
+                "- If you suspect it might be related to low blood sugar, try eating something.\n\n"
+                "If dizziness is persistent, severe, or accompanied by other symptoms like chest pain or shortness of breath, seek medical attention immediately.")
+
+    elif "shortness of breath" in prompt_lower:
+        return ("Shortness of breath can be serious. Here's what you should do:\n"
+                "- Sit down and try to remain calm.\n"
+                "- Breathe slowly and deeply.\n"
+                "- If you have an inhaler and have been prescribed one, use it as directed.\n\n"
+                "If you are experiencing severe shortness of breath, chest pain, or feel faint, seek emergency medical care immediately, as it could indicate a serious condition like a heart attack or asthma attack.")
+
+    else:
+        # For other inputs, generate a response using Ollama
+        response = client.ask(prompt)
+        return response.text  # Assuming response has a text attribute
+
+# Interaction loop
+while True:
+    user_input = input("How are you feeling today? ")
+
+    # Exit condition
+    if user_input.lower() in ['exit', 'quit']:
+        print("Thanks for chatting! Have a great day!")
+        break
+
+    # Generate and print response
+    response = generate_response(user_input)
+    print("Bot:", response)
+
+    # Thank you message after each interaction
+    print("Thanks for sharing!")
